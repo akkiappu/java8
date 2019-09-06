@@ -4,10 +4,8 @@ package tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Comparator;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class IntegerStreamUsage {
 
