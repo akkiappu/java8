@@ -1,11 +1,13 @@
 package tests;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ListStreamUsage {
@@ -21,17 +23,30 @@ public class ListStreamUsage {
         Assert.assertEquals(7, max);
     }
 
+    /***
+     * Below method can also be use for removing duplicate from list
+     */
     @Test
-    public void distinctNumbersFromList_usingArray() {
+    public void distinctNumbersFromList_usingToArray() {
         final Integer[] distinctNumArray = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10).stream().distinct().toArray(Integer[]::new);
         Assert.assertArrayEquals(new Integer[]{2, 6, 3, 1, 7, 5, 10}, distinctNumArray);
     }
 
+    /***
+     * Below method can also be use for removing duplicate from list
+     */
     @Test
-    public void distinctNumbersFromList_usingList() {
+    public void distinctNumbersFromList_usingCollectToList() {
         final List<Integer> distinctNumList = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10).stream().distinct().collect(Collectors.toList());
         Assert.assertEquals(ImmutableList.of(2, 6, 3, 1, 7, 5, 10), distinctNumList);
     }
+
+    @Test
+    public void collectSetFromList() {
+        final Set<Integer> integerSet = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10).stream().collect(Collectors.toSet());
+        Assert.assertEquals(ImmutableSet.of(2, 6, 3, 1, 7, 5, 10), integerSet);
+    }
+
 
     @Test
     public void filterEvenNumbersFromList() {
