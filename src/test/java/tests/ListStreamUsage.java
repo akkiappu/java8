@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ListStreamUsage {
     @Test
@@ -64,5 +65,36 @@ public class ListStreamUsage {
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         System.out.println(repetitiveCount);
+    }
+
+    @Test
+    public void combiningListsOrCollections_usingAddAll() {
+        final List<Integer> integerList = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
+        final List<Integer> integerList1 = ImmutableList.of(2, 6, 3, 7, 3, 5, 10);
+        final List<Integer> integerList2 = ImmutableList.of(1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
+        final List<Integer> combinedList = new ArrayList<>();
+        combinedList.addAll(integerList);
+        combinedList.addAll(integerList1);
+        combinedList.addAll(integerList2);
+        Assert.assertEquals(ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10, 2, 6, 3, 7, 3, 5, 10, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10), combinedList);
+    }
+
+    @Test
+    public void combiningListsOrCollections_usingStreamConcat() {
+        final List<Integer> integerList = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
+        final List<Integer> integerList1 = ImmutableList.of(2, 6, 3, 7, 3, 5, 10);
+        final List<Integer> integerList2 = ImmutableList.of(1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
+        final Stream<Integer> combinedStream = Stream.concat(Stream.concat(integerList.stream(), integerList1.stream()), integerList2.stream());
+        Assert.assertEquals(ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10, 2, 6, 3, 7, 3, 5, 10, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10), combinedStream.collect(Collectors.toList()));
+    }
+
+
+    @Test
+    public void combiningListsOrCollections_usingFlatMap() {
+        final List<Integer> integerList = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
+        final List<Integer> integerList1 = ImmutableList.of(2, 6, 3, 7, 3, 5, 10);
+        final List<Integer> integerList2 = ImmutableList.of(1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
+        final List<Integer> combinedList = Stream.of(integerList, integerList1, integerList2).flatMap(List::stream).collect(Collectors.toList());
+        Assert.assertEquals(ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10, 2, 6, 3, 7, 3, 5, 10, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10), combinedList);
     }
 }
