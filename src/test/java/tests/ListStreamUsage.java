@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ListStreamUsage {
@@ -49,7 +50,6 @@ public class ListStreamUsage {
         Assert.assertEquals(ImmutableSet.of(2, 6, 3, 1, 7, 5, 10), integerSet);
     }
 
-
     @Test
     public void filterEvenNumbersFromList() {
         final List<Integer> evenNumbers = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10)
@@ -88,7 +88,6 @@ public class ListStreamUsage {
         Assert.assertEquals(ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10, 2, 6, 3, 7, 3, 5, 10, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10), combinedStream.collect(Collectors.toList()));
     }
 
-
     @Test
     public void combiningListsOrCollections_usingFlatMap() {
         final List<Integer> integerList = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
@@ -96,5 +95,22 @@ public class ListStreamUsage {
         final List<Integer> integerList2 = ImmutableList.of(1, 7, 2, 6, 3, 1, 7, 3, 5, 10);
         final List<Integer> combinedList = Stream.of(integerList, integerList1, integerList2).flatMap(List::stream).collect(Collectors.toList());
         Assert.assertEquals(ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10, 2, 6, 3, 7, 3, 5, 10, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10), combinedList);
+    }
+
+    @Test
+    public void joiningListElements_usingCollectorsJoining() {
+        final List<String> integerList = ImmutableList.of("Java","8","Coder");
+        String joinResultWithoutDelimiter = integerList.stream().collect(Collectors.joining());
+        String joinResultWithDelimiter = integerList.stream().collect(Collectors.joining("|"));
+        Assert.assertEquals("Java8Coder",joinResultWithoutDelimiter);
+        Assert.assertEquals("Java|8|Coder",joinResultWithDelimiter);
+    }
+
+    @Test
+    public void combiningAndSumListElements_usingReduce() {
+        final int[] ints = {1, 2};
+        final List<Integer> integerList = ImmutableList.of(1,2,3,4,5);
+        System.out.println(integerList.stream().reduce(1,(a,b)-> a+b));
+        IntStream.of(ints);
     }
 }

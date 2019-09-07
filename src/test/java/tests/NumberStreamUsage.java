@@ -7,12 +7,18 @@ import org.junit.Test;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
-public class IntegerStreamUsage {
+public class NumberStreamUsage {
 
     @Test
     public void createAndPrintIntegerStream(){
-        final IntStream intStream = IntStream.of(2, 6, 3, 1, 7, 5, 7);
+        final IntStream intStream = IntStream.of(2, 6, 3, 1, 7, 5, 7);//Similarly can create for LongStream, DoubleStream
         intStream.forEach(System.out::print);
+    }
+
+    @Test
+    public void createIntegerStream_UsingIntegerArray(){
+        int[] ints = new int[]{2, 6, 3, 1, 7, 5, 7};
+        IntStream.of(ints).forEach(System.out::print);
     }
 
     @Test

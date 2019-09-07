@@ -90,6 +90,7 @@ public class StreamOperationsOnStudentObject {
         Assert.assertEquals("Noreen", topperStudents.get("Female").getFirstName());
 
     }
+
     @Test
     public void averageMarksOfStudents()throws Exception{
         final double averageMarks = MockData.getStudent()
@@ -119,7 +120,6 @@ public class StreamOperationsOnStudentObject {
                 .count();
         Assert.assertEquals(138, count);
     }
-
 
     @Test
     public void studentAverageMarksStatistics()throws Exception{
