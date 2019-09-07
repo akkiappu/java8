@@ -5,9 +5,8 @@ import com.google.common.collect.ImmutableSet;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ListStreamUsage {
@@ -43,7 +42,9 @@ public class ListStreamUsage {
 
     @Test
     public void collectSetFromList() {
-        final Set<Integer> integerSet = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10).stream().collect(Collectors.toSet());
+        final Set<Integer> integerSet = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10)
+                .stream()
+                .collect(Collectors.toSet());
         Assert.assertEquals(ImmutableSet.of(2, 6, 3, 1, 7, 5, 10), integerSet);
     }
 
@@ -55,5 +56,13 @@ public class ListStreamUsage {
                 .filter(num -> num % 2 == 0)
                 .collect(Collectors.toList());
         Assert.assertEquals(ImmutableList.of(2, 6, 2, 6, 10), evenNumbers);
+    }
+
+    @Test
+    public void numbersRepetitiveCount() {
+        final Map<Integer, Long> repetitiveCount = ImmutableList.of(2, 6, 3, 1, 7, 2, 6, 3, 1, 7, 3, 5, 10)
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(repetitiveCount);
     }
 }

@@ -6,6 +6,7 @@ import mockdata.MockData;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -77,5 +78,49 @@ public class StreamOperationsOnStudentObject {
 
         Assert.assertEquals(162, failedStudentCount.get("Male").size());
         Assert.assertEquals(160, failedStudentCount.get("Female").size());
+    }
+
+    @Test
+    public void averageMarksOfStudents()throws Exception{
+        final double averageMarks = MockData.getStudent()
+                .stream()
+                .mapToInt(Student::getMarks)
+                .average()
+                .orElse(-1);
+        Assert.assertEquals(51.139, averageMarks,0);
+    }
+
+    @Test
+    public void averageMarksOfPassedStudents()throws Exception{
+        final double averageMarks = MockData.getStudent()
+                .stream()
+                .filter(student -> student.getMarks() > 33)
+                .mapToInt(Student::getMarks)
+                .average()
+                .orElse(-1);
+        Assert.assertEquals(68.23, averageMarks,1);
+    }
+
+    @Test
+    public void countOfSecondDivisionPassedStudents()throws Exception{
+        final long count = MockData.getStudent()
+                .stream()
+                .filter(student -> student.getMarks() > 45 && student.getMarks() < 60)
+                .count();
+        Assert.assertEquals(138, count);
+    }
+
+
+    @Test
+    public void studentAverageMarksStatistics()throws Exception{
+        final IntSummaryStatistics marksSummaryStatistics = MockData.getStudent()
+                .stream()
+                .mapToInt(Student::getMarks)
+                .summaryStatistics();
+        Assert.assertEquals(51.139, marksSummaryStatistics.getAverage(),0);
+        Assert.assertEquals(1000, marksSummaryStatistics.getCount());
+        Assert.assertEquals(1, marksSummaryStatistics.getMin());
+        Assert.assertEquals(100, marksSummaryStatistics.getMax());
+        Assert.assertEquals(51139, marksSummaryStatistics.getSum());
     }
 }
