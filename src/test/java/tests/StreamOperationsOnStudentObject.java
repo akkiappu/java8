@@ -6,9 +6,7 @@ import mockdata.MockData;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.IntSummaryStatistics;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StreamOperationsOnStudentObject {
@@ -80,6 +78,18 @@ public class StreamOperationsOnStudentObject {
         Assert.assertEquals(160, failedStudentCount.get("Female").size());
     }
 
+    @Test
+    public void topperStudentGenderWise() throws Exception{
+        final ImmutableList<Student> students = MockData.getStudent();
+        final Map<String, Student> topperStudents = students
+                .stream()
+                .collect(Collectors.groupingBy(Student::getGender, Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparing(Student::getMarks)), Optional::get)));
+        Assert.assertEquals(100, topperStudents.get("Male").getMarks());
+        Assert.assertEquals(100, topperStudents.get("Female").getMarks());
+        Assert.assertEquals("Marlin", topperStudents.get("Male").getFirstName());
+        Assert.assertEquals("Noreen", topperStudents.get("Female").getFirstName());
+
+    }
     @Test
     public void averageMarksOfStudents()throws Exception{
         final double averageMarks = MockData.getStudent()
